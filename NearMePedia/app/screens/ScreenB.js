@@ -1,11 +1,13 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import NearMeScreen from "../components/NearMeScreen";
+import HistoryScreen from "../components/HistoryScreen";
+import Constants from "expo-constants";
+
 import { Ionicons } from "@expo/vector-icons";
 
 const NavigationIcon = props => (
   <Ionicons
-    name={"md-navigate"}
+    name={"md-bookmark"}
     size={35}
     color={props.focused ? "grey" : "darkgrey"}
   />
@@ -19,7 +21,7 @@ export default class ScreenA extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <NearMeScreen name={"Near me"}></NearMeScreen>
+        <HistoryScreen name={"History"}></HistoryScreen>
       </View>
     );
   }
@@ -29,6 +31,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight
   }
 });

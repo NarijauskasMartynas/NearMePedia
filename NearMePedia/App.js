@@ -1,9 +1,15 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import AppNavigator from "./navigation/AppNavigator";
+import AppNavigator from "./app/navigation/AppNavigator";
+import PlacesContextProvider from "./app/context/PlacesContext";
+import Constants from "expo-constants";
 
 export default function App() {
-  return <AppNavigator></AppNavigator>;
+  return (
+    <PlacesContextProvider>
+      <AppNavigator style={styles.container}></AppNavigator>
+    </PlacesContextProvider>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -11,6 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight
   }
 });

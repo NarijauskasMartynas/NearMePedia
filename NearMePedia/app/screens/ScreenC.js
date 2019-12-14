@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import SavedScreen from "../components/SavedScreen";
+import Constants from "expo-constants";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: Constants.statusBarHeight
   }
 });
