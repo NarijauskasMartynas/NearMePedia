@@ -1,23 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Linking
+  Linking,
+  Button
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { PlacesContext } from "../context/PlacesContext";
 
 export default function PlaceItem(props) {
+  const { addPlaceToSavedPlaces } = useContext(PlacesContext);
+
   openWebView = () => {
     Linking.openURL("https://en.wikipedia.org/?curid=" + props.place.pageid);
   };
-  console.log(props.place);
+
   return (
     <TouchableOpacity onPress={this.openWebView} style={styles.itemView}>
-      <View>
+      <View style={styles.bigColumn}>
         <Text>{props.place.title}</Text>
-        <Text>{props.place.dist} meters</Text>
+        <Text style={{ marginTop: 10 }}>{props.place.dist} m.</Text>
       </View>
+      <TouchableOpacity
+        onPress={() => addPlaceToSavedPlaces(props.place)}
+        style={styles.heartStyle}
+      >
+        <Ionicons
+          name={props.place.isSaved ? "md-heart" : "md-heart-empty"}
+          size={60}
+          color={props.focused ? "red" : "darkred"}
+        />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
@@ -25,12 +40,12 @@ export default function PlaceItem(props) {
 const styles = StyleSheet.create({
   itemView: {
     flexDirection: "row",
-    backgroundColor: "green",
+    backgroundColor: "#FFE4B5",
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     height: 150,
-    marginTop: 5,
+    marginTop: 15,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#fff",
@@ -41,5 +56,13 @@ const styles = StyleSheet.create({
       height: 1,
       width: 0
     }
+  },
+  smallColumn: {
+    flexDirection: "column",
+    flex: 1
+  },
+  bigColumn: {
+    flexDirection: "column",
+    flex: 1
   }
 });

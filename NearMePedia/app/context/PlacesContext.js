@@ -7,13 +7,30 @@ export const PlacesContext = createContext();
 const PlacesContextProvider = props => {
   const [places, setPlaces] = useState([]);
   const [coordinates, setCoordinates] = useState();
+  const [loading, setLoading] = useState(true);
+  const [savedPlaces, setSavedPlaces] = useState([]);
 
   useEffect(() => {
     getCoordinates();
     getNearLocations();
   }, []);
 
+  addPlaceToSavedPlaces = place => {
+    if (place.isSaved) {
+      place.isSaved = false;
+      setSavedPlaces(savedPlaces.filter(item => item.title !== place.title));
+    } else {
+      place.isSaved = true;
+      setSavedPlaces([...savedPlaces, place]);
+    }
+  };
+
+  saveNewCoordinates = coordinates => {
+    console.log("set");
+  };
+
   const getNearLocations = async () => {
+    setLoading(true);
     let coordinates = await getCoordinates();
     var url = "https://en.wikipedia.org/w/api.php";
     let params = {
@@ -35,7 +52,12 @@ const PlacesContextProvider = props => {
         return response.json();
       })
       .then(function(response) {
-        setPlaces(response.query.geosearch);
+        setLoading(false);
+        let modifiedArray = response.query.geosearch.map(x => {
+          x.isSaved = false;
+          return x;
+        });
+        setPlaces(modifiedArray);
       })
       .catch(function(error) {
         console.log(error);
@@ -58,21 +80,16 @@ const PlacesContextProvider = props => {
     return coordinates;
   };
 
-  function distance(lat1, lon1, lat2, lon2) {
-    console.log(lat1, lat2, lon1, lon2);
-    var p = 0.017453292519943295; // Math.PI / 180
-    var c = Math.cos;
-    var a =
-      0.5 -
-      c((lat2 - lat1) * p) / 2 +
-      (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
-
-    console.log("ats: " + a);
-    return 12742 * Math.asin(Math.sqrt(a));
-  }
-
   return (
-    <PlacesContext.Provider value={{ places }}>
+    <PlacesContext.Provider
+      value={{
+        places,
+        loading,
+        savedPlaces,
+        addPlaceToSavedPlaces,
+        setNewCoordinates
+      }}
+    >
       {props.children}
     </PlacesContext.Provider>
   );
