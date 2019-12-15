@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import HistoryScreen from "../components/HistoryScreen";
+import LocationsScreen from "../components/main/LocationsScreen";
 import Constants from "expo-constants";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -21,7 +21,10 @@ export default class ScreenA extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <HistoryScreen name={"History"}></HistoryScreen>
+        <LocationsScreen
+          navigation={this.props.navigation}
+          name={"History"}
+        ></LocationsScreen>
       </View>
     );
   }

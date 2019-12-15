@@ -6,6 +6,7 @@ export const PlacesContext = createContext();
 
 const PlacesContextProvider = props => {
   const [places, setPlaces] = useState([]);
+  const [locationsHistory, setLocationsHistory] = useState([]);
   const [coordinates, setCoordinates] = useState();
   const [loading, setLoading] = useState(true);
   const [savedPlaces, setSavedPlaces] = useState([]);
@@ -14,6 +15,49 @@ const PlacesContextProvider = props => {
     getCoordinates();
     getNearLocations();
   }, []);
+
+  addlocationToLocationHistory = async enteredAddress => {
+    setLoading(true);
+    let result = await Location.geocodeAsync(enteredAddress);
+    getAddressFromCoord(result[0]);
+  };
+
+  getAddressFromCoord = async location => {
+    let addr = await Location.reverseGeocodeAsync({
+      latitude: location.latitude,
+      longitude: location.longitude
+    });
+
+    if (addr[0].country !== undefined) {
+      let locationToSave = {
+        lat: location.latitude,
+        lon: location.longitude,
+        country: addr[0].country,
+        city: addr[0].city,
+        street: addr[0].street
+      };
+
+      var index = locationsHistory.findIndex(
+        location =>
+          location.country == locationToSave.country &&
+          location.city == locationToSave.city &&
+          location.street == locationToSave.street
+      );
+
+      if (index === -1) {
+        setLocationsHistory([...locationsHistory, locationToSave]);
+      }
+      await getLocationsWithCoordinates(locationToSave);
+    }
+  };
+
+  getLocationsWithCoordinates = async locationToSave => {
+    await getNearLocations({
+      latitude: locationToSave.lat,
+      longitude: locationToSave.lon
+    });
+    setLoading(false);
+  };
 
   addPlaceToSavedPlaces = place => {
     if (place.isSaved) {
@@ -25,13 +69,12 @@ const PlacesContextProvider = props => {
     }
   };
 
-  saveNewCoordinates = coordinates => {
-    console.log("set");
-  };
-
-  const getNearLocations = async () => {
+  getNearLocations = async coordinates => {
     setLoading(true);
-    let coordinates = await getCoordinates();
+    if (!coordinates) {
+      coordinates = await getCoordinates();
+      await getAddressFromCoord(coordinates);
+    }
     var url = "https://en.wikipedia.org/w/api.php";
     let params = {
       action: "query",
@@ -54,7 +97,14 @@ const PlacesContextProvider = props => {
       .then(function(response) {
         setLoading(false);
         let modifiedArray = response.query.geosearch.map(x => {
-          x.isSaved = false;
+          let contains = false;
+          savedPlaces.forEach(savedPlace => {
+            if (x.lat == savedPlace.lat && x.lon == savedPlace.lon) {
+              contains = true;
+            }
+          });
+
+          x.isSaved = contains;
           return x;
         });
         setPlaces(modifiedArray);
@@ -86,8 +136,11 @@ const PlacesContextProvider = props => {
         places,
         loading,
         savedPlaces,
+        locationsHistory,
         addPlaceToSavedPlaces,
-        setNewCoordinates
+        addlocationToLocationHistory,
+        getLocationsWithCoordinates,
+        getNearLocations
       }}
     >
       {props.children}

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import SavedScreen from "../components/SavedScreen";
+import SavedScreen from "../components/main/SavedScreen";
 import Constants from "expo-constants";
 
 import { Ionicons } from "@expo/vector-icons";

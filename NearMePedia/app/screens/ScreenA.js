@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import NearMeScreen from "../components/NearMeScreen";
+import NearMeScreen from "../components/main/NearMeScreen";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 
