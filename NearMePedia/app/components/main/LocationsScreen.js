@@ -6,7 +6,9 @@ import Constants from "expo-constants";
 import AddNewLocationForm from "../AddNewLocationForm";
 
 export default function LocationsScreen(props) {
-  const { locationsHistory, getNearLocations } = useContext(PlacesContext);
+  const { locationsHistory, getNearLocations, isLoading } = useContext(
+    PlacesContext
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   getLocationsAndNavigate = async () => {

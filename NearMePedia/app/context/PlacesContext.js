@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import * as Location from "expo-location";
+import { AsyncStorage } from "react-native";
 import * as Permissions from "expo-permissions";
 
 export const PlacesContext = createContext();
@@ -12,6 +13,8 @@ const PlacesContextProvider = props => {
   const [savedPlaces, setSavedPlaces] = useState([]);
 
   useEffect(() => {
+    checkStorage();
+
     getCoordinates();
     getNearLocations();
   }, []);
@@ -49,6 +52,14 @@ const PlacesContextProvider = props => {
 
       if (index === -1) {
         setLocationsHistory([...locationsHistory, locationToSave]);
+        try {
+          await AsyncStorage.setItem(
+            "@LocationHistory",
+            JSON.stringify([...locationsHistory, locationToSave])
+          );
+        } catch (e) {
+          console.log(e);
+        }
       }
       await getLocationsWithCoordinates(locationToSave);
     }
@@ -62,7 +73,7 @@ const PlacesContextProvider = props => {
     setLoading(false);
   };
 
-  addPlaceToSavedPlaces = place => {
+  addPlaceToSavedPlaces = async place => {
     if (place.isSaved) {
       place.isSaved = false;
       setSavedPlaces(savedPlaces.filter(item => item.title !== place.title));
@@ -70,6 +81,19 @@ const PlacesContextProvider = props => {
       place.isSaved = true;
       setSavedPlaces([...savedPlaces, place]);
     }
+    try {
+      if (place.isSaved) {
+        await AsyncStorage.setItem(
+          "@SavedPlaces",
+          JSON.stringify([...savedPlaces, place])
+        );
+      } else {
+        await AsyncStorage.setItem(
+          "@SavedPlaces",
+          JSON.stringify(savedPlaces.filter(item => item.title !== place.title))
+        );
+      }
+    } catch (e) {}
   };
 
   getNearLocations = async coordinates => {
@@ -106,9 +130,10 @@ const PlacesContextProvider = props => {
           savedPlaces.forEach(savedPlace => {
             if (x.lat == savedPlace.lat && x.lon == savedPlace.lon) {
               contains = true;
+              console.log(x.title);
+              console.log("CONTAINTS");
             }
           });
-
           x.isSaved = contains;
           return x;
         });
@@ -158,6 +183,29 @@ const PlacesContextProvider = props => {
     setSavedPlaces(savedPlaces);
   };
 
+  checkStorage = async () => {
+    try {
+      const savedPlaces = await AsyncStorage.getItem("@SavedPlaces");
+      if (savedPlaces !== null && savedPlaces.length != 0) {
+        // We have data!!
+        let parsedPlaces = JSON.parse(savedPlaces);
+        setSavedPlaces(parsedPlaces);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+
+    try {
+      const locationHistory = await AsyncStorage.getItem("@LocationHistory");
+      if (locationHistory !== null && locationHistory.length != 0) {
+        // We have data!!
+        let parsedLocations = JSON.parse(locationHistory);
+        setLocationsHistory(parsedLocations);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
   return (
     <PlacesContext.Provider
       value={{

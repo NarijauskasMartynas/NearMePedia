@@ -11,12 +11,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { PlacesContext } from "../context/PlacesContext";
 
 export default function PlaceItem(props) {
-  const { addPlaceToSavedPlaces } = useContext(PlacesContext);
-
+  const { addPlaceToSavedPlaces, savedPlaces } = useContext(PlacesContext);
   openWebView = () => {
     Linking.openURL("https://en.wikipedia.org/?curid=" + props.place.pageid);
   };
 
+  console.log(props.place.isSaved);
   return (
     <TouchableOpacity onPress={this.openWebView} style={styles.itemView}>
       <View style={styles.bigColumn}>
