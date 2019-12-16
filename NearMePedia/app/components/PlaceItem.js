@@ -1,22 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Linking,
-  Button
+  Linking
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { PlacesContext } from "../context/PlacesContext";
 
 export default function PlaceItem(props) {
-  const { addPlaceToSavedPlaces, savedPlaces } = useContext(PlacesContext);
+  const { addPlaceToSavedPlaces } = useContext(PlacesContext);
   openWebView = () => {
     Linking.openURL("https://en.wikipedia.org/?curid=" + props.place.pageid);
   };
 
-  console.log(props.place.isSaved);
   return (
     <TouchableOpacity onPress={this.openWebView} style={styles.itemView}>
       <View style={styles.bigColumn}>

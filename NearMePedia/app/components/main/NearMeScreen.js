@@ -6,7 +6,6 @@ export default function NearMeScreen(props) {
   const { places, loading, getNearLocations } = useContext(PlacesContext);
 
   useEffect(() => {
-    //getCoordinates();
     getNearLocations();
   }, []);
 

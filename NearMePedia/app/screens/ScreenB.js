@@ -21,10 +21,7 @@ export default class ScreenA extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <LocationsScreen
-          navigation={this.props.navigation}
-          name={"History"}
-        ></LocationsScreen>
+        <LocationsScreen navigation={this.props.navigation}></LocationsScreen>
       </View>
     );
   }

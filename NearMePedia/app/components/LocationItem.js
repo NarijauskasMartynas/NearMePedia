@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { PlacesContext } from "../context/PlacesContext";
 
 export default function LocationItem(props) {

@@ -21,7 +21,7 @@ export default class ScreenC extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <SavedScreen name={"Saved"}></SavedScreen>
+        <SavedScreen />
       </View>
     );
   }

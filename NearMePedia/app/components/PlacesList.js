@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 
 import PlaceItem from "./PlaceItem";

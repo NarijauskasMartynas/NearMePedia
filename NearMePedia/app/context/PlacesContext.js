@@ -180,7 +180,6 @@ const PlacesContextProvider = props => {
     try {
       const savedPlaces = await AsyncStorage.getItem("@SavedPlaces");
       if (savedPlaces !== null && savedPlaces.length != 0) {
-        // We have data!!
         let parsedPlaces = JSON.parse(savedPlaces);
         setSavedPlaces(parsedPlaces);
       }

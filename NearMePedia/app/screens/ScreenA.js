@@ -20,7 +20,7 @@ export default class ScreenA extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <NearMeScreen name={"Near me"}></NearMeScreen>
+        <NearMeScreen />
       </View>
     );
   }
