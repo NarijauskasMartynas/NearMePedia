@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
-import { View, Text } from "react-native";
+import React, { useContext, useEffect } from "react";
 import PlacesList from "../PlacesList";
 import { PlacesContext } from "../../context/PlacesContext";
 
 export default function NearMeScreen(props) {
-  const { places, loading } = useContext(PlacesContext);
+  const { places, loading, getNearLocations } = useContext(PlacesContext);
+
+  useEffect(() => {
+    //getCoordinates();
+    getNearLocations();
+  }, []);
 
   return <PlacesList places={places} isLoading={loading}></PlacesList>;
 }

@@ -15,8 +15,8 @@ const PlacesContextProvider = props => {
   useEffect(() => {
     checkStorage();
 
-    getCoordinates();
-    getNearLocations();
+    //getCoordinates();
+    // getNearLocations();
   }, []);
 
   addlocationToLocationHistory = async enteredAddress => {
@@ -130,8 +130,6 @@ const PlacesContextProvider = props => {
           savedPlaces.forEach(savedPlace => {
             if (x.lat == savedPlace.lat && x.lon == savedPlace.lon) {
               contains = true;
-              console.log(x.title);
-              console.log("CONTAINTS");
             }
           });
           x.isSaved = contains;

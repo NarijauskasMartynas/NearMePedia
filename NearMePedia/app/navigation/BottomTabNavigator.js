@@ -8,8 +8,8 @@ import ScreenC from "../screens/ScreenC";
 
 const BottomTabNavigator = createBottomTabNavigator(
   {
-    One: ScreenA,
-    Two: ScreenB,
+    One: ScreenB,
+    Two: ScreenA,
     Three: ScreenC
   },
   {
