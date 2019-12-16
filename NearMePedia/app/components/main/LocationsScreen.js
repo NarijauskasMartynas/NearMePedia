@@ -13,7 +13,7 @@ export default function LocationsScreen(props) {
 
   getLocationsAndNavigate = async () => {
     await getNearLocations();
-    props.navigation.navigate("One");
+    props.navigation.navigate("Two");
   };
 
   return (

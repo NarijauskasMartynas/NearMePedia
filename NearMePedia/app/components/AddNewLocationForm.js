@@ -10,7 +10,7 @@ export default function AddNewLocationForm(props) {
   searchButtonPressed = () => {
     addlocationToLocationHistory(enteredAddress);
     Keyboard.dismiss();
-    props.navigation.navigate("One");
+    props.navigation.navigate("Two");
   };
 
   return (

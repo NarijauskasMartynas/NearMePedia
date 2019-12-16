@@ -10,7 +10,7 @@ export default function LocationItem(props) {
       lat: location.lat,
       lon: location.lon
     });
-    props.navigation.navigate("One");
+    props.navigation.navigate("Two");
   };
 
   return (

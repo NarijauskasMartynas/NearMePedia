@@ -8,15 +8,11 @@ export const PlacesContext = createContext();
 const PlacesContextProvider = props => {
   const [places, setPlaces] = useState([]);
   const [locationsHistory, setLocationsHistory] = useState([]);
-  const [coordinates, setCoordinates] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [savedPlaces, setSavedPlaces] = useState([]);
 
   useEffect(() => {
     checkStorage();
-
-    //getCoordinates();
-    // getNearLocations();
   }, []);
 
   addlocationToLocationHistory = async enteredAddress => {
@@ -102,7 +98,6 @@ const PlacesContextProvider = props => {
       coordinates = await getCoordinates();
       await getAddressFromCoord(coordinates);
     }
-    setCoordinates(coordinates);
     setSavedPlacesDistance(coordinates);
     var url = "https://en.wikipedia.org/w/api.php";
     let params = {
